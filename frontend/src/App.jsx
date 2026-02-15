@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useMemo } from "react";
+import { useMemo ,useEffect} from "react";
 
 import Login from "./pages/Login";
 import RegisterPage from "./pages/Register";
@@ -24,6 +24,10 @@ function App() {
         () => !!localStorage.getItem("authToken"),
         []
     );
+    useEffect(() => {
+        console.log("API URL:", import.meta.env.VITE_API_URL);
+    }, []);
+
 
     return (
         <Router>

@@ -28,4 +28,4 @@ dist-ssr
 backend/.env
 
 backend/uploads/
-frontend/src/.env
+frontend/.env
