@@ -13,7 +13,7 @@ import adminRoutes from './routes/admin.js';
 import dashboardRoutes from './routes/dashboard.js';
 
 // Load environment variables
-dotenv.config({ path: './easy.env' });
+dotenv.config({ path: './.env' });
 
 // --- ES MODULE COMPATIBILITY ---
 const __filename = fileURLToPath(import.meta.url);
