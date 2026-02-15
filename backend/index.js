@@ -23,8 +23,8 @@ const app = express();
 
 // --- GLOBAL MIDDLEWARE ---
 app.use(cors());
-app.use(express.json()); // Parses JSON bodies
-app.use(express.urlencoded({ extended: true })); // Parses Form-encoded bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // --- STATIC FILES =
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
