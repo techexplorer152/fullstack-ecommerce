@@ -26,5 +26,6 @@ dist-ssr
 
 # Environment files
 backend/.env
-frontend/src/apiConfig.js
+
 backend/uploads/
+frontend/src/.env
