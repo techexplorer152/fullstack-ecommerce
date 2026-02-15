@@ -11,27 +11,18 @@ import ordersRoutes from './routes/orders.js';
 import adminRoutes from './routes/admin.js';
 import dashboardRoutes from './routes/dashboard.js';
 
-dotenv.config({ path: './.env' });
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
-const allowedOrigins = [
-    'https://fullstack-ecommerce-nine-beige.vercel.app', // your Vercel frontend
-    'http://localhost:5173' // local frontend dev
-];
-
 app.use(cors({
-    origin: function(origin, callback){
-        if(!origin) return callback(null, true);
-        if(allowedOrigins.indexOf(origin) === -1){
-            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-            return callback(new Error(msg), false);
-        }
-        return callback(null, true);
-    },
+    origin: [
+        'https://fullstack-ecommerce-nine-beige.vercel.app',
+        'http://localhost:5173'
+    ],
     credentials: true
 }));
 
@@ -54,15 +45,16 @@ app.get('/', async (req, res) => {
             db_time: result.rows[0].now
         });
     } catch (err) {
-        console.error("Database connection error:", err.message);
-        res.status(500).json({ error: 'Server error: Database unreachable' });
+        res.status(500).json({ error: 'Database unreachable' });
     }
+});
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Internal Server Error' });
 });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`-----------------------------------------`);
     console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`📁 Static files served from: ${path.join(__dirname, 'uploads')}`);
-    console.log(`-----------------------------------------`);
 });
