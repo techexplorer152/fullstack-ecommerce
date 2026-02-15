@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Orders.css";
 import PageLoader from "./PageLoader";
+import API_URL from "../apiConfig";
 
 function Orders({ onDataReady }) {
     const [orders, setOrders] = useState([]);
@@ -19,7 +20,7 @@ function Orders({ onDataReady }) {
                     return;
                 }
 
-                const response = await fetch("http://localhost:5000/api/orders", {
+                const response = await fetch(`${API_URL}/api/orders`, {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${token}`,
@@ -37,7 +38,6 @@ function Orders({ onDataReady }) {
 
                 const data = await response.json();
 
-                // Ensure we always work with an array
                 setOrders(Array.isArray(data) ? data : []);
             } catch (err) {
                 console.error("Error fetching orders:", err);

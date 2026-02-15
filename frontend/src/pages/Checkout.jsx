@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import API_URL from "../apiConfig";
 import "./Checkout.css";
 
 function Checkout() {
@@ -26,8 +27,8 @@ function Checkout() {
         setLoading(true);
 
         try {
-            const token = localStorage.getItem("authToken"); // JWT
-            const response = await fetch("http://localhost:5000/orders", {
+            const token = localStorage.getItem("authToken");
+            const response = await fetch(`${API_URL}/api/orders`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

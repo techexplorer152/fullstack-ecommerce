@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "./AdminLayout";
+import API_URL from "../apiConfig";
 
 function AdminUsers() {
     const [users, setUsers] = useState([]);
@@ -15,7 +16,7 @@ function AdminUsers() {
             setLoading(true);
             setError("");
 
-            const res = await fetch("http://localhost:5000/admin/users", {
+            const res = await fetch(`${API_URL}/admin/users`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -44,19 +45,16 @@ function AdminUsers() {
         setMessage("");
 
         try {
-            const res = await fetch(
-                `http://localhost:5000/admin/users/${user.id}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({
-                        is_admin: !user.is_admin,
-                    }),
-                }
-            );
+            const res = await fetch(`${API_URL}/admin/users/${user.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    is_admin: !user.is_admin,
+                }),
+            });
 
             if (!res.ok) {
                 throw new Error("Failed to update user");
@@ -79,15 +77,12 @@ function AdminUsers() {
         setMessage("");
 
         try {
-            const res = await fetch(
-                `http://localhost:5000/admin/users/${id}`,
-                {
-                    method: "DELETE",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            const res = await fetch(`${API_URL}/admin/users/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
             if (!res.ok) {
                 throw new Error("Failed to delete user");
@@ -159,4 +154,3 @@ function AdminUsers() {
 }
 
 export default AdminUsers;
-

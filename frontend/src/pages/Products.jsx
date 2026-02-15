@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Products.css";
 import PageLoader from "./PageLoader";
+import API_URL from "../apiConfig";
 
-const API_URL = "http://localhost:5000";
+
 
 function Products({ onDataReady }) {
     const [products, setProducts] = useState([]);

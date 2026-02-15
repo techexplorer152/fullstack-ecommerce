@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
+import API_URL from "../apiConfig";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -11,7 +12,7 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch("http://localhost:5000/api/auth/login", {
+            const res = await fetch(`${API_URL}/api/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
@@ -31,7 +32,7 @@ function Login() {
     };
 
     return (
-        <div className="login-page"> {/* <-- Added wrapper */}
+        <div className="login-page">
             <div className="login-container">
                 <h2>Login</h2>
                 {message && <p className="message">{message}</p>}

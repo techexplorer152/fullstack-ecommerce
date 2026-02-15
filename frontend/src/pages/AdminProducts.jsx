@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "./AdminLayout";
 import "./AdminProducts.css";
+import API_URL from "../apiConfig";
 
 function AdminProducts() {
     const [products, setProducts] = useState([]);
@@ -23,7 +24,7 @@ function AdminProducts() {
     const fetchProducts = async () => {
         try {
             setLoading(true);
-            const res = await fetch("http://localhost:5000/admin/products", {
+            const res = await fetch(`${API_URL}/admin/products`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await res.json();
@@ -71,8 +72,8 @@ function AdminProducts() {
             });
 
             const url = editingId
-                ? `http://localhost:5000/admin/products/${editingId}`
-                : "http://localhost:5000/admin/products";
+                ? `${API_URL}/admin/products/${editingId}`
+                : `${API_URL}/admin/products`;
 
             const res = await fetch(url, {
                 method,
@@ -114,7 +115,7 @@ function AdminProducts() {
         if (!confirm("Delete this product?")) return;
 
         try {
-            await fetch(`http://localhost:5000/admin/products/${id}`, {
+            await fetch(`${API_URL}/admin/products/${id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -174,7 +175,7 @@ function AdminProducts() {
                             <td>
                                 {p.images?.length > 0 && (
                                     <img
-                                        src={`http://localhost:5000${p.images[0]}`}
+                                        src={`${API_URL}${p.images[0]}`}
                                         width="50"
                                     />
                                 )}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import StatsGrid from "../components/StatsGrid";
 import RecentOrders from "../components/RecentOrders";
 import "./Dashboard.css";
+import API_URL from "../apiConfig";
 
 function Dashboard() {
     const [user, setUser] = useState(null);
@@ -17,13 +18,12 @@ function Dashboard() {
 
         const fetchDashboard = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/dashboard", {
+                const res = await fetch(`${API_URL}/api/dashboard`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
-
                 if (!res.ok) {
-                    const errorText = await res.text(); // handle HTML error pages
+                    const errorText = await res.text();
                     throw new Error(errorText || "Failed to fetch dashboard");
                 }
 

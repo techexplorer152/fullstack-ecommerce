@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminLayout from "./AdminLayout";
+import API_URL from "../apiConfig";
 
 function AdminDashboard() {
     const [stats, setStats] = useState(null);
@@ -11,13 +12,14 @@ function AdminDashboard() {
             try {
                 const token = localStorage.getItem("authToken");
 
-                const res = await fetch("http://localhost:5000/admin/stats", {
+                const res = await fetch(`${API_URL}/admin/stats`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 
                 if (!res.ok) throw new Error("Failed");
 
-                setStats(await res.json());
+                const data = await res.json();
+                setStats(data);
             } catch {
                 setError("Could not load admin stats.");
             } finally {
@@ -50,7 +52,7 @@ function AdminDashboard() {
                 </div>
                 <div className="stat-card">
                     <h3>Total Revenue</h3>
-                    <p>${stats.totalRevenue.toFixed(2)}</p>
+                    <p>${Number(stats.totalRevenue).toFixed(2)}</p>
                 </div>
             </div>
         </AdminLayout>
@@ -58,4 +60,3 @@ function AdminDashboard() {
 }
 
 export default AdminDashboard;
-

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import "./Cart.css";
+import API_URL from "../apiConfig";
 
-const API_URL = "http://localhost:5000";
+const API_URL = API_URL;
 
 function Cart() {
     const [cartItems, setCartItems] = useState([]);

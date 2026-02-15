@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "./AdminLayout";
+import API_URL from "../apiConfig";
 import "./AdminOrders.css";
-
 
 function AdminOrders() {
     const [orders, setOrders] = useState([]);
@@ -15,7 +15,7 @@ function AdminOrders() {
             setLoading(true);
             setError("");
 
-            const res = await fetch("http://localhost:5000/admin/orders", {
+            const res = await fetch(`${API_URL}/admin/orders`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -39,17 +39,14 @@ function AdminOrders() {
 
     const handleStatusChange = async (id, status) => {
         try {
-            const res = await fetch(
-                `http://localhost:5000/admin/orders/${id}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({ status }),
-                }
-            );
+            const res = await fetch(`${API_URL}/admin/orders/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ status }),
+            });
 
             if (!res.ok) throw new Error("Failed to update order");
 
@@ -110,4 +107,3 @@ function AdminOrders() {
 }
 
 export default AdminOrders;
-

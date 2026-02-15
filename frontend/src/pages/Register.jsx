@@ -1,32 +1,52 @@
 import { useState } from "react";
+import API_URL from "../apiConfig";
 import "./Register.css";
 
 function Register() {
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+    });
     const [message, setMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const { username, email, password, confirmPassword } = formData;
 
         if (password !== confirmPassword) {
             setMessage("Passwords do not match");
             return;
         }
 
+        setIsLoading(true);
+        setMessage("");
+
         try {
-            const res = await fetch("http://localhost:5000/api/auth/register", {
+            const res = await fetch(`${API_URL}/api/auth/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, email, password }),
             });
+
             const data = await res.json();
-            setMessage(data.message);
+
+            if (res.ok) {
+                setMessage("Registration successful!");
+                setFormData({ username: "", email: "", password: "", confirmPassword: "" });
+            } else {
+                setMessage(data.message || "Registration failed");
+            }
         } catch (err) {
-            console.error(err);
-            setMessage("Error registering user");
+            setMessage("Error connecting to server");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -41,8 +61,9 @@ function Register() {
                         <label htmlFor="username">Username</label>
                         <input
                             type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
                             required
                             placeholder="Enter Username"
                         />
@@ -52,8 +73,9 @@ function Register() {
                         <label htmlFor="email">Email</label>
                         <input
                             type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
                             required
                             placeholder="Enter Email"
                         />
@@ -63,27 +85,35 @@ function Register() {
                         <label htmlFor="password">Password</label>
                         <input
                             type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
                             required
                             placeholder="Enter Password"
                         />
                     </div>
 
                     <div className="input-group">
-                        <label htmlFor="confirm-password">Confirm Password</label>
+                        <label htmlFor="confirmPassword">Confirm Password</label>
                         <input
                             type="password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            name="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
                             required
                             placeholder="Confirm Password"
                         />
                     </div>
 
-                    <button type="submit" className="register-btn">Register</button>
+                    <button
+                        type="submit"
+                        className="register-btn"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Loading..." : "Register"}
+                    </button>
 
-                    {message && <p>{message}</p>}
+                    {message && <p className="message">{message}</p>}
 
                     <p className="login-text">
                         Already have an account? <a href="/login">Login</a>

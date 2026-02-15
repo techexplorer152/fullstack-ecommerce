@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import './ProductDetail.css'
-
-
-const API_URL = "http://localhost:5000";
+import API_URL from "../apiConfig";
 
 function ProductDetail() {
     const { id } = useParams();
