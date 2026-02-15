@@ -51,7 +51,7 @@ export const createProduct = async (req, res) => {
         console.error("🔥 CREATE PRODUCT ERROR:", err);
         res.status(500).json({
             message: err.message,
-            stack: err.stack, // TEMPORARY
+            stack: err.stack,
         });
     }
 };

@@ -5,38 +5,46 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import pool from './db.js';
 
-// Route imports
 import authRoutes from './routes/auth.js';
 import productRoutes from './routes/products.js';
 import ordersRoutes from './routes/orders.js';
 import adminRoutes from './routes/admin.js';
 import dashboardRoutes from './routes/dashboard.js';
 
-// Load environment variables
 dotenv.config({ path: './.env' });
 
-// --- ES MODULE COMPATIBILITY ---
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// --- GLOBAL MIDDLEWARE ---
-app.use(cors());
+const allowedOrigins = [
+    'https://fullstack-ecommerce-nine-beige.vercel.app', // your Vercel frontend
+    'http://localhost:5173' // local frontend dev
+];
+
+app.use(cors({
+    origin: function(origin, callback){
+        if(!origin) return callback(null, true);
+        if(allowedOrigins.indexOf(origin) === -1){
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
+    credentials: true
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// --- STATIC FILES =
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// --- API ROUTES ---
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/admin', adminRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
-// --- DATABASE CONNECTION TEST ---
 app.get('/', async (req, res) => {
     try {
         const result = await pool.query('SELECT NOW()');
@@ -51,7 +59,6 @@ app.get('/', async (req, res) => {
     }
 });
 
-// --- SERVER START ---
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`-----------------------------------------`);
