@@ -19,11 +19,16 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 app.use(cors({
-    origin: [
-        'https://fullstack-ecommerce-nine-beige.vercel.app',
-        'http://localhost:5173'
-    ],
-    credentials: true
+    origin: function (origin, callback) {
+        if (!origin || origin.endsWith('.vercel.app') || origin === 'http://localhost:5173') {
+            callback(null, true);
+        } else {
+            callback(new Error('CORS blocked: This origin is not allowed'));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
