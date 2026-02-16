@@ -11,23 +11,26 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setMessage("");
+
         try {
             const res = await fetch(`${API_URL}/api/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
             });
+
             const data = await res.json();
 
             if (res.ok) {
                 localStorage.setItem("authToken", data.token);
                 navigate("/dashboard");
             } else {
-                setMessage(data.message);
+                setMessage(data?.message || "Login failed");
             }
         } catch (err) {
-            console.error(err);
-            setMessage("Error logging in");
+            console.error("Fetch error:", err);
+            setMessage("Connection refused. Make sure your local backend is running on port 5000.");
         }
     };
 

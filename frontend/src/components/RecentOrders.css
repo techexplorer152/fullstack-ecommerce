@@ -1,58 +1,202 @@
 .recent-orders {
-    background: #fff;
-    padding: 1.5rem;
-    border-radius: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    margin-top: 2rem;
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    border: 1px solid #eef2f7;
+    margin-top: 24px;
 }
 
-.recent-orders h2 {
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
-    color: #333;
+
+.table-header-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
 }
 
-.recent-orders table {
+.table-header-group h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+
+table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 700px;
 }
 
-.recent-orders th,
-.recent-orders td {
+thead tr {
+    background: #f8fafc;
+}
+
+th {
     text-align: left;
-    padding: 0.8rem;
-    border-bottom: 1px solid #eee;
-}
-
-.recent-orders th {
-    background: #f5f7fa;
-    color: #555;
+    padding: 16px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #64748b;
     font-weight: 600;
+    border-bottom: 1px solid #e2e8f0;
 }
 
-.recent-orders tr:hover {
-    background-color: #f9fbff;
+td {
+    padding: 18px 16px;
+    font-size: 0.95rem;
+    color: #1e293b;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+tbody tr {
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+tbody tr:hover {
+    background: #f9fafb;
 }
 
 
-.status {
-    padding: 0.3rem 0.6rem;
-    border-radius: 0.5rem;
+.price-cell {
     font-weight: 600;
-    text-transform: capitalize;
+    color: #0f172a;
 }
 
-.status.delivered {
-    background: #d1fae5;
-    color: #065f46;
+
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
-.status.shipped {
+.status-badge.delivered {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-badge.shipped {
     background: #e0f2fe;
-    color: #0369a1;
+    color: #075985;
 }
 
-.status.processing {
+.status-badge.processing {
     background: #fef3c7;
     color: #92400e;
+}
+
+
+.font-mono {
+    font-family: monospace;
+    font-size: 0.85rem;
+    background: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: #475569;
+}
+
+
+.recent-orders.empty,
+.recent-orders.loading {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.recent-orders.empty h2 {
+    margin-bottom: 10px;
+}
+
+/* ---------------- MOBILE ---------------- */
+
+@media (max-width: 768px) {
+    .recent-orders {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    table {
+        min-width: 100%;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody tr {
+        display: block;
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 16px;
+        margin-bottom: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+    }
+
+    td {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 8px 0;
+        border-bottom: 1px dashed #e2e8f0;
+        font-size: 0.82rem;
+        text-align: right;
+        gap: 12px;
+    }
+
+    td:last-child {
+        border-bottom: none;
+    }
+
+
+    td::before {
+        margin-left: 20px;
+        content: attr(data-label);
+        font-weight: 600;
+        color: #64748b;
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        flex-shrink: 0;
+    }
+
+
+    td span,
+    td {
+        font-weight: 500;
+    }
+
+    td[data-label="Item"] {
+        font-weight: 600;
+        color: #0f172a;
+    }
+
+    td[data-label="Total"] {
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+
+    .font-mono {
+        font-size: 0.75rem;
+        padding: 3px 6px;
+    }
+
+    .status-badge {
+        font-size: 0.65rem;
+        padding: 5px 10px;
+    }
 }
