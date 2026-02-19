@@ -50,13 +50,15 @@ function Products({ onDataReady }) {
                 <div className="products-grid">
                     {products.map((product) => (
                         <div key={product.id} className="product-card">
-                            {/* FIX: Check plural .images array and prepend API_URL */}
+
                             {product.images && product.images.length > 0 ? (
                                 <div className="product-image-container">
+
                                     <img
-                                        src={`${API_URL}${product.images[0]}`}
+                                        src={product.images?.[0]?.startsWith('http') ? product.images[0] : `${API_URL}${product.images[0]}`}
                                         alt={product.name}
-                                        className="product-img"
+                                        className="product-image"
+                                        onError={(e) => { e.target.src = 'https://via.placeholder.com/300?text=No+Image'; }}
                                     />
                                 </div>
                             ) : (

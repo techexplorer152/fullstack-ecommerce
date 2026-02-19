@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import AdminLayout from "./AdminLayout";
 import "./AdminProducts.css";
@@ -175,8 +176,11 @@ function AdminProducts() {
                             <td>
                                 {p.images?.length > 0 && (
                                     <img
-                                        src={`${API_URL}${p.images[0]}`}
+                                        src={p.images[0].startsWith('http') ? p.images[0] : `${API_URL}${p.images[0]}`}
                                         width="50"
+                                        alt={p.name}
+                                        style={{ borderRadius: '4px', objectFit: 'cover' }}
+                                        onError={(e) => { e.target.src = "https://via.placeholder.com/50?text=No+Img"; }}
                                     />
                                 )}
                             </td>
@@ -194,3 +198,6 @@ function AdminProducts() {
 }
 
 export default AdminProducts;
+
+
+

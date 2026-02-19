@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import "./Cart.css";
 import API_URL from "../apiConfig";
 
-
-
 function Cart() {
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [message, setMessage] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -34,6 +33,9 @@ function Cart() {
             return;
         }
 
+        setIsSubmitting(true);
+        setMessage("");
+
         try {
             const res = await fetch(`${API_URL}/api/orders`, {
                 method: "POST",
@@ -41,7 +43,11 @@ function Cart() {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({ cartItems }),
+                body: JSON.stringify({
+                    items: cartItems,
+                    totalAmount: totalPrice,
+                    shippingAddress: "User Address"
+                }),
             });
 
             const data = await res.json();
@@ -56,7 +62,9 @@ function Cart() {
             }
         } catch (err) {
             console.error(err);
-            setMessage("❌ Error placing order");
+            setMessage("❌ Error placing order. Please check your connection.");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -74,11 +82,11 @@ function Cart() {
                         <div className="cart-list">
                             {cartItems.map((item) => (
                                 <div key={item.id} className="cart-item">
-
                                     <div className="cart-item-image-wrapper">
                                         {item.displayImage ? (
+
                                             <img
-                                                src={item.displayImage}
+                                                src={item.images?.[0]?.startsWith('http') ? item.images[0] : `${API_URL}${item.images[0]}`}
                                                 alt={item.name}
                                                 className="cart-item-image"
                                             />
@@ -102,6 +110,7 @@ function Cart() {
                                     <button
                                         className="remove-btn"
                                         onClick={() => handleRemove(item.id)}
+                                        disabled={isSubmitting}
                                     >
                                         Remove
                                     </button>
@@ -111,14 +120,22 @@ function Cart() {
 
                         <div className="cart-summary">
                             <h3>Total: ${totalPrice.toFixed(2)}</h3>
-                            <button className="checkout-btn" onClick={handleCheckout}>
-                                Confirm & Place Order
+                            <button
+                                className="checkout-btn"
+                                onClick={handleCheckout}
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? "Processing..." : "Confirm & Place Order"}
                             </button>
                         </div>
                     </>
                 )}
 
-                {message && <p className={`message ${message.includes('✅') ? 'success' : 'error'}`}>{message}</p>}
+                {message && (
+                    <p className={`message ${message.includes('✅') ? 'success' : 'error'}`}>
+                        {message}
+                    </p>
+                )}
             </div>
         </section>
     );

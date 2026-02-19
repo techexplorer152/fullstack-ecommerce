@@ -32,13 +32,14 @@ export const getProductById = async (req, res) => {
     }
 };
 
+// ----------------------
+// CREATE PRODUCT (Updated for Cloudinary)
+// ----------------------
 export const createProduct = async (req, res) => {
     try {
-        console.log("BODY:", req.body);
-        console.log("FILES:", req.files);
 
         const images = req.files
-            ? req.files.map(file => `/uploads/products/${file.filename}`)
+            ? req.files.map(file => file.path)
             : [];
 
         const newProduct = await createProductService({
@@ -50,21 +51,19 @@ export const createProduct = async (req, res) => {
     } catch (err) {
         console.error("🔥 CREATE PRODUCT ERROR:", err);
         res.status(500).json({
-            message: err.message,
-            stack: err.stack,
+            message: err.message
         });
     }
 };
 
-
 // ----------------------
-// UPDATE PRODUCT
+// UPDATE PRODUCT (Updated for Cloudinary)
 // ----------------------
 export const updateProduct = async (req, res) => {
     try {
-
+        // If new files are uploaded, use the new Cloudinary URLs
         const images = req.files && req.files.length > 0
-            ? req.files.map(file => `/uploads/products/${file.filename}`)
+            ? req.files.map(file => file.path)
             : undefined;
 
         const updatedProduct = await updateProductService(req.params.id, {

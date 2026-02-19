@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import './ProductDetail.css'
+import './ProductDetail.css';
 import API_URL from "../apiConfig";
 
 function ProductDetail() {
@@ -10,11 +10,8 @@ function ProductDetail() {
 
     const handleAddToCart = () => {
         const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-
         const productToSave = {
             ...product,
-
             displayImage: product.images && product.images.length > 0
                 ? `${API_URL}${product.images[0]}`
                 : null
@@ -33,9 +30,12 @@ function ProductDetail() {
     };
 
     useEffect(() => {
+        if (!id || id === "undefined") return;
+
         const fetchProduct = async () => {
             try {
                 const res = await fetch(`${API_URL}/api/products/${id}`);
+                if (!res.ok) throw new Error(`Server error: ${res.status}`);
                 const data = await res.json();
                 setProduct(data);
                 setLoading(false);
@@ -47,40 +47,52 @@ function ProductDetail() {
         fetchProduct();
     }, [id]);
 
-    if (loading) {
-        return <p>Loading product...</p>;
-    }
+    if (loading) return <div className="loader">Loading product...</div>;
 
     if (!product) {
-        return <p>Product not found</p>;
+        return (
+            <div className="error-container">
+                <p>Product not found</p>
+                <Link replace to="/products" className="back-link">Back to Catalog</Link>
+            </div>
+        );
     }
 
     return (
-        <div className="product-detail">
+        <div className="product-page-container">
+            <div className="product-detail">
+                <div className="product-image-section">
+                    {product.images && product.images.length > 0 ? (
 
-            {product.images && product.images.length > 0 ? (
-                <div className="product-detail-image">
-                    <img
-                        src={`${API_URL}${product.images[0]}`}
-                        alt={product.name}
-                    />
+
+                                <img
+                                    src={product.images[0].startsWith('http') ? product.images[0] : `${API_URL}${product.images[0]}`}
+                                    alt={product.name}
+                                    className="placeholder-img"
+                                    onError={(e) => { e.target.src = 'https://via.placeholder.com/600?text=Image+Not+Found'; }}
+                                />
+
+                    ) : (
+                        <div className="placeholder-img">No image available</div>
+                    )}
                 </div>
-            ) : (
-                <div className="placeholder-img">No image available</div>
-            )}
 
-            <div className="product-info">
-                <h2>{product.name}</h2>
-                <p className="description">{product.description}</p>
-                <p className="price"><strong>Price:</strong> ${product.price}</p>
+                <div className="product-info-section">
+                    <div className="info-header">
+                        <h2>{product.name}</h2>
+                        <div className="price-tag">${product.price}</div>
+                    </div>
 
-                <div className="cart-buttons">
-                    <button onClick={handleAddToCart} className="Add-to-cart">
-                        Add to Cart
-                    </button>
-                    <div className="navigation-links">
-                        <Link to="/cart" className="go-to-cart-btn">Go to Cart</Link>
-                        <Link to="/products" className="back-to-products-btn">← Back to Products</Link>
+                    <p className="description">{product.description}</p>
+
+                    <div className="action-area">
+                        <button onClick={handleAddToCart} className="add-to-cart-btn">
+                            Add to Cart
+                        </button>
+                        <div className="secondary-actions">
+                            <Link to="/cart" className="nav-btn cart-link">View Cart</Link>
+                            <Link to="/products" className="nav-btn back-link">Catalog</Link>
+                        </div>
                     </div>
                 </div>
             </div>
