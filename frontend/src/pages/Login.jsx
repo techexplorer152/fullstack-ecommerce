@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Login.css";
+import styles from "./Login.module.css";
 import API_URL from "../apiConfig";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage("");
+        setIsLoading(true);
 
         try {
             const res = await fetch(`${API_URL}/api/auth/login`, {
@@ -26,38 +29,69 @@ function Login() {
                 localStorage.setItem("authToken", data.token);
                 navigate("/dashboard");
             } else {
-                setMessage(data?.message || "Login failed");
+                setMessage(data?.message || "Invalid credentials. Please try again.");
             }
         } catch (err) {
-            console.error("Fetch error:", err);
-            setMessage("Connection refused. Make sure your local backend is running on port 5000.");
+            setMessage("Server unreachable. Please check your connection.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <div className="login-page">
-            <div className="login-container">
-                <h2>Login</h2>
-                {message && <p className="message">{message}</p>}
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <button type="submit">Login</button>
+        <div className={styles.loginPage}>
+            <div className={styles.loginCard}>
+                <div className={styles.loginHeader}>
+                    <h2>Welcome Back</h2>
+                    <p>Enter your details to access your account</p>
+                </div>
+
+                {message && <div className={styles.errorBanner}>{message}</div>}
+
+                <form onSubmit={handleSubmit} className={styles.loginForm}>
+                    <div className={styles.inputGroup}>
+                        <label>Email Address</label>
+                        <div className={styles.inputWrapper}>
+                            <input
+                                type="email"
+                                placeholder="name@company.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div className={styles.inputGroup}>
+                        <div className={styles.labelRow}>
+                            <label>Password</label>
+
+                        </div>
+                        <div className={styles.inputWrapper}>
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="••••••••"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className={styles.togglePassword}
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? "Hide" : "Show"}
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" className={styles.loginBtn} disabled={isLoading}>
+                        {isLoading ? "Signing in..." : "Sign In"}
+                    </button>
                 </form>
-                <p>
-                    Don’t have an account? <Link to="/register">Register</Link>
+
+                <p className={styles.footerText}>
+                    New here? <Link to="/register">Create an account</Link>
                 </p>
             </div>
         </div>
