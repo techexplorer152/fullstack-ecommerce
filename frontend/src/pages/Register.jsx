@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styles from "./Register.module.css";
 import API_URL from "../apiConfig";
-import "./Register.css";
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ function Register() {
     });
     const [message, setMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,8 +40,7 @@ function Register() {
             const data = await res.json();
 
             if (res.ok) {
-                setMessage("Registration successful!");
-                setFormData({ username: "", email: "", password: "", confirmPassword: "" });
+                navigate("/login");
             } else {
                 setMessage(data.message || "Registration failed");
             }
@@ -51,72 +52,74 @@ function Register() {
     };
 
     return (
-        <div className="register-container">
-            <div className="register-card">
-                <form onSubmit={handleSubmit}>
+        <div className={styles.registerPage}>
+            <div className={styles.registerCard}>
+                <div className={styles.registerHeader}>
                     <h2>Create Account</h2>
-                    <p className="subtitle">Join us and explore amazing features</p>
+                    <p>Join us and explore amazing features</p>
+                </div>
 
-                    <div className="input-group">
-                        <label htmlFor="username">Username</label>
+                {message && <div className={styles.errorBanner}>{message}</div>}
+
+                <form onSubmit={handleSubmit} className={styles.registerForm}>
+                    <div className={styles.inputGroup}>
+                        <label>Username</label>
                         <input
                             type="text"
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
                             required
-                            placeholder="Enter Username"
+                            placeholder="johndoe"
                         />
                     </div>
 
-                    <div className="input-group">
-                        <label htmlFor="email">Email</label>
+                    <div className={styles.inputGroup}>
+                        <label>Email</label>
                         <input
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
                             required
-                            placeholder="Enter Email"
+                            placeholder="name@company.com"
                         />
                     </div>
 
-                    <div className="input-group">
-                        <label htmlFor="password">Password</label>
+                    <div className={styles.inputGroup}>
+                        <label>Password</label>
                         <input
                             type="password"
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
                             required
-                            placeholder="Enter Password"
+                            placeholder="••••••••"
                         />
                     </div>
 
-                    <div className="input-group">
-                        <label htmlFor="confirmPassword">Confirm Password</label>
+                    <div className={styles.inputGroup}>
+                        <label>Confirm Password</label>
                         <input
                             type="password"
                             name="confirmPassword"
                             value={formData.confirmPassword}
                             onChange={handleChange}
                             required
-                            placeholder="Confirm Password"
+                            placeholder="••••••••"
                         />
                     </div>
 
                     <button
                         type="submit"
-                        className="register-btn"
+                        className={styles.registerBtn}
                         disabled={isLoading}
                     >
-                        {isLoading ? "Loading..." : "Register"}
+                        {isLoading ? "Creating Account..." : "Register"}
                     </button>
 
-                    {message && <p className="message">{message}</p>}
-
-                    <p className="login-text">
-                        Already have an account? <a href="/login">Login</a>
+                    <p className={styles.footerText}>
+                        Already have an account? <Link to="/login">Login</Link>
                     </p>
                 </form>
             </div>
