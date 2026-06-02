@@ -49,7 +49,7 @@ export const createProduct = async (req, res) => {
 
         res.status(201).json(newProduct);
     } catch (err) {
-        console.error("🔥 CREATE PRODUCT ERROR:", err);
+        console.error(" CREATE PRODUCT ERROR:", err);
         res.status(500).json({
             message: err.message
         });

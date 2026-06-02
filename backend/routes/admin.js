@@ -1,7 +1,7 @@
 import express from "express";
 import { authenticateToken } from "../utils/authMiddleware.js";
 import adminMiddleware from "../utils/adminMiddleware.js";
-import { uploadProductImage } from "../utils/uploadMiddleware.js"; // 1. Import this!
+import { uploadProductImage } from "../utils/uploadMiddleware.js";
 
 import { adminStats } from "../controllers/adminController.js";
 import { getAllUsers, updateUser, deleteUser } from "../controllers/userController.js";
