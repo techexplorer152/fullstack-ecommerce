@@ -12,6 +12,20 @@ import { uploadProductImage } from '../utils/uploadMiddleware.js';
 
 const router = express.Router();
 
+
+const handleUploadMiddleware = (req, res, next) => {
+    uploadProductImage.array('images', 5)(req, res, (err) => {
+        if (err) {
+            console.error("🔴 Live Route Multer Crash Log:", err.stack || err);
+            return res.status(500).json({
+                message: "Image upload engine failed execution",
+                error: err.message
+            });
+        }
+        next();
+    });
+};
+
 // ----------------------
 // Public Routes
 // ----------------------
@@ -23,10 +37,9 @@ router.get('/:id', getProductById);
 // ----------------------
 
 // POST: Create Product
-
 router.post(
     '/',
-    uploadProductImage.array('images', 5),
+    handleUploadMiddleware,
     authenticateToken,
     adminMiddleware,
     createProduct
@@ -35,7 +48,7 @@ router.post(
 // PUT: Update Product
 router.put(
     '/:id',
-    uploadProductImage.array('images', 5),
+    handleUploadMiddleware,
     authenticateToken,
     adminMiddleware,
     updateProduct
