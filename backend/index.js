@@ -55,8 +55,17 @@ app.get('/', async (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("🔴 GLOBAL CATCH-ALL TRAPPED AN ERROR:");
+    if (err && err.stack) {
+        console.error(err.stack);
+    } else {
+        console.error(err);
+    }
+
+    res.status(500).json({
+        error: 'Internal Server Error',
+        details: err && typeof err === 'object' ? err.message || JSON.stringify(err) : String(err)
+    });
 });
 
 const PORT = process.env.PORT || 5000;
