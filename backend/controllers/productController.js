@@ -13,10 +13,10 @@ export const getAllProducts = async (req, res) => {
     try {
         const products = await getAllProductsService();
         res.json(products);
-    } catch (err) {
-        console.error("Error fetching products:", err);
-        res.status(500).json({ message: "Server error" });
-    }
+    } catch (error) {
+    console.error("🔴 FULL DETAILED ERROR:", error);
+    res.status(500).json({ message: error.message || "Internal Server Error" });
+}
 };
 
 // ----------------------
