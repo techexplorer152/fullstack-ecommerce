@@ -14,9 +14,9 @@ export const getAllProducts = async (req, res) => {
         const products = await getAllProductsService();
         res.json(products);
     } catch (error) {
-    console.error("🔴 FULL DETAILED ERROR:", error);
-    res.status(500).json({ message: error.message || "Internal Server Error" });
-}
+        console.error("Error fetching products:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
 };
 
 // ----------------------
@@ -33,11 +33,10 @@ export const getProductById = async (req, res) => {
 };
 
 // ----------------------
-// CREATE PRODUCT (Updated for Cloudinary)
+// CREATE PRODUCT (Updated for Cloudinary Debugging)
 // ----------------------
 export const createProduct = async (req, res) => {
     try {
-
         const images = req.files
             ? req.files.map(file => file.path)
             : [];
@@ -49,9 +48,10 @@ export const createProduct = async (req, res) => {
 
         res.status(201).json(newProduct);
     } catch (err) {
-        console.error(" CREATE PRODUCT ERROR:", err);
+        // 🚀 CRITICAL FIX: Forces the entire stack trace of the failure out to your Render dashboard
+        console.error("🔴 FULL DETAILED CREATE PRODUCT ERROR:", err.stack || err);
         res.status(500).json({
-            message: err.message
+            message: err.message || "Internal Server Error"
         });
     }
 };
@@ -61,7 +61,6 @@ export const createProduct = async (req, res) => {
 // ----------------------
 export const updateProduct = async (req, res) => {
     try {
-        // If new files are uploaded, use the new Cloudinary URLs
         const images = req.files && req.files.length > 0
             ? req.files.map(file => file.path)
             : undefined;
