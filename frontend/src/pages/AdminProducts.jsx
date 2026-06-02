@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import AdminLayout from "./AdminLayout";
 import "./AdminProducts.css";
@@ -29,7 +28,7 @@ function AdminProducts() {
                 headers: { Authorization: `Bearer ${token}` },
             });
             const data = await res.json();
-            setProducts(data);
+            setProducts(Array.isArray(data) ? data : []);
         } catch {
             setError("Failed to load products");
         } finally {
@@ -80,11 +79,15 @@ function AdminProducts() {
                 method,
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    // Explicitly ensuring no standard application/json header intercepts the payload
                 },
                 body: formData,
             });
 
-            if (!res.ok) throw new Error();
+            if (!res.ok) {
+                const errData = await res.json().catch(() => ({}));
+                throw new Error(errData.message || "Server Error");
+            }
 
             setMessage(
                 editingId
@@ -94,8 +97,8 @@ function AdminProducts() {
 
             resetForm();
             fetchProducts();
-        } catch {
-            setError("❌ Failed to save product");
+        } catch (err) {
+            setError(err.message || "❌ Failed to save product");
         } finally {
             setSubmitting(false);
         }
@@ -174,14 +177,20 @@ function AdminProducts() {
                             <td>{p.name}</td>
                             <td>${p.price}</td>
                             <td>
-                                {p.images?.length > 0 && (
+                                {Array.isArray(p.images) && p.images.length > 0 ? (
                                     <img
                                         src={p.images[0].startsWith('http') ? p.images[0] : `${API_URL}${p.images[0]}`}
                                         width="50"
                                         alt={p.name}
-                                        style={{ borderRadius: '4px', objectFit: 'cover' }}
-                                        onError={(e) => { e.target.src = "https://via.placeholder.com/50?text=No+Img"; }}
+                                        style={{ borderRadius: '4px', objectFit: 'cover', height: '50px' }}
+                                        onError={(e) => {
+                                            // Removes the onError handler immediately to break any infinite rendering loop
+                                            e.target.onerror = null;
+                                            e.target.src = "https://placehold.co/50x50?text=No+Img";
+                                        }}
                                     />
+                                ) : (
+                                    <span style={{ fontSize: '11px', color: '#999' }}>No Image</span>
                                 )}
                             </td>
                             <td>
@@ -198,6 +207,5 @@ function AdminProducts() {
 }
 
 export default AdminProducts;
-
 
 
