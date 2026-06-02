@@ -13,23 +13,24 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
-    params: {
-        folder: 'products',
-        allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
-        transformation: [{ width: 800, height: 800, crop: 'limit' }]
+    params: async (req, file) => {
+        return {
+            folder: 'products',
+            format: 'jpeg', // Forces clean validation format conversion
+            transformation: [{ width: 800, height: 800, crop: 'limit' }]
+        };
     },
 });
 
 const fileFilter = (req, file, cb) => {
-    if (!file.mimetype.startsWith("image/")) {
-        cb(new Error("Only images allowed"), false);
-    } else {
-        cb(null, true);
+    if (!file || !file.mimetype || !file.mimetype.startsWith("image/")) {
+        return cb(new Error("Only images allowed"), false);
     }
+    cb(null, true);
 };
 
 export const uploadProductImage = multer({
     storage: storage,
-    fileFilter,
+    fileFilter: fileFilter,
     limits: { fileSize: 5 * 1024 * 1024 },
 });
