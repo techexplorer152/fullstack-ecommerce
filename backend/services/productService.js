@@ -1,8 +1,5 @@
 import pool from "../db.js";
 
-// ----------------------
-// GET ALL PRODUCTS
-// ----------------------
 export const getAllProducts = async () => {
     const result = await pool.query(
         "SELECT * FROM products ORDER BY id DESC"
@@ -10,9 +7,6 @@ export const getAllProducts = async () => {
     return result.rows;
 };
 
-// ----------------------
-// GET SINGLE PRODUCT BY ID
-// ----------------------
 export const getProductById = async (id) => {
     const result = await pool.query(
         "SELECT * FROM products WHERE id = $1",
@@ -26,9 +20,6 @@ export const getProductById = async (id) => {
     return result.rows[0];
 };
 
-// ----------------------
-// CREATE PRODUCT
-// ----------------------
 export const createProduct = async (data) => {
     const { name, description, price, stock, images } = data;
 
@@ -57,16 +48,13 @@ export const createProduct = async (data) => {
             description || "",
             parsedPrice,
             parsedStock,
-            images || []
+            images && images.length > 0 ? images : null
         ]
     );
 
     return result.rows[0];
 };
 
-// ----------------------
-// UPDATE PRODUCT
-// ----------------------
 export const updateProduct = async (id, data) => {
     const { name, description, price, stock, images } = data;
 
@@ -97,7 +85,7 @@ export const updateProduct = async (id, data) => {
             description ?? null,
             parsedPrice,
             parsedStock,
-            images ?? null,
+            images && images.length > 0 ? images : null,
             id
         ]
     );
@@ -109,9 +97,6 @@ export const updateProduct = async (id, data) => {
     return result.rows[0];
 };
 
-// ----------------------
-// DELETE PRODUCT
-// ----------------------
 export const deleteProduct = async (id) => {
     const result = await pool.query(
         "DELETE FROM products WHERE id = $1 RETURNING id",
