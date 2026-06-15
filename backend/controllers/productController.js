@@ -1,3 +1,4 @@
+import pool from "./db.js";
 import {
     getAllProducts as getAllProductsService,
     getProductById as getProductByIdService,
@@ -33,7 +34,7 @@ export const getProductById = async (req, res) => {
 };
 
 // ----------------------
-// CREATE PRODUCT (Updated for Cloudinary Debugging)
+// CREATE PRODUCT (Updated for Cloudinary Debugging & Rate Limiting)
 // ----------------------
 export const createProduct = async (req, res) => {
     try {
@@ -46,10 +47,12 @@ export const createProduct = async (req, res) => {
             images,
         });
 
+        await pool.query('INSERT INTO global_upload_logs DEFAULT VALUES');
+
         res.status(201).json(newProduct);
     } catch (err) {
-        // 🚀 CRITICAL FIX: Forces the entire stack trace of the failure out to your Render dashboard
-        console.error("🔴 FULL DETAILED CREATE PRODUCT ERROR:", err.stack || err);
+
+        console.error(" FULL DETAILED CREATE PRODUCT ERROR:", err.stack || err);
         res.status(500).json({
             message: err.message || "Internal Server Error"
         });

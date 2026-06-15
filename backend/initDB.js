@@ -1,11 +1,9 @@
-import { query } from './db.js';
+import pool from './db.js';
 
 const setupDatabase = async () => {
     try {
         console.log('⏳ Creating global_upload_logs table in Neon...');
-
-        // SQL query to create the rate limit tracking table
-        await query(`
+        await pool.query(`
       CREATE TABLE IF NOT EXISTS global_upload_logs (
         id SERIAL PRIMARY KEY,
         uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

@@ -2,6 +2,7 @@ import pkg from 'pg';
 const { Pool } = pkg;
 import dotenv from 'dotenv';
 
+
 dotenv.config({ path: './.env' });
 
 const pool = new Pool({
@@ -16,8 +17,7 @@ const pool = new Pool({
 });
 
 pool.on('connect', () => {
-    console.log('✅ Connected to the database!');
+    console.log('Connected to the database!');
 });
 
 export default pool;
-
