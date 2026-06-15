@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "./AdminLayout";
-import API_URL from "../apiConfig";
+import API_URL from "../../apiConfig";
 import "./AdminOrders.css";
 
 function AdminOrders() {

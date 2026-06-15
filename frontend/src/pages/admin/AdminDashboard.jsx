@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminLayout from "./AdminLayout";
-import API_URL from "../apiConfig";
+import API_URL from "../../apiConfig";
 
 function AdminDashboard() {
     const [stats, setStats] = useState(null);

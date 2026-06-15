@@ -40,6 +40,17 @@ function Login() {
 
     return (
         <div className={styles.loginPage}>
+            <div className={styles.demoCredentialsBox}>
+                <h4>🔑 Portfolio Tester Access</h4>
+                <p>To test the admin features and product management panel without creating an account, use these credentials:</p>
+                <div className={styles.credentialRow}>
+                    <strong>Email:</strong> <span>admin@demo.com</span>
+                </div>
+                <div className={styles.credentialRow}>
+                    <strong>Password:</strong> <span>demo1234</span>
+                </div>
+            </div>
+
             <div className={styles.loginCard}>
                 <div className={styles.loginHeader}>
                     <h2>Welcome Back</h2>
@@ -65,7 +76,6 @@ function Login() {
                     <div className={styles.inputGroup}>
                         <div className={styles.labelRow}>
                             <label>Password</label>
-
                         </div>
                         <div className={styles.inputWrapper}>
                             <input

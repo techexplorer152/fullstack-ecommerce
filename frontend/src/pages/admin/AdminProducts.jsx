@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "./AdminLayout";
 import "./AdminProducts.css";
-import API_URL from "../apiConfig";
+import API_URL from "../../apiConfig";
 
 function AdminProducts() {
     const [products, setProducts] = useState([]);
@@ -79,7 +79,6 @@ function AdminProducts() {
                 method,
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    // Explicitly ensuring no standard application/json header intercepts the payload
                 },
                 body: formData,
             });
@@ -184,7 +183,6 @@ function AdminProducts() {
                                         alt={p.name}
                                         style={{ borderRadius: '4px', objectFit: 'cover', height: '50px' }}
                                         onError={(e) => {
-                                            // Removes the onError handler immediately to break any infinite rendering loop
                                             e.target.onerror = null;
                                             e.target.src = "https://placehold.co/50x50?text=No+Img";
                                         }}
@@ -207,5 +205,4 @@ function AdminProducts() {
 }
 
 export default AdminProducts;
-
 

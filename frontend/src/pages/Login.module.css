@@ -8,6 +8,7 @@
     --error: #ef4444;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
@@ -16,6 +17,9 @@
     background-size: 40px 40px;
     font-family: 'Inter', system-ui, sans-serif;
     color: var(--text-main);
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .loginCard {
@@ -26,6 +30,68 @@
     width: 100%;
     max-width: 420px;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    box-sizing: border-box;
+}
+
+.demoCredentialsBox {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-left: 4px solid var(--primary);
+    border-radius: 12px;
+    padding: 20px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+}
+
+.demoCredentialsBox h4 {
+    margin: 0 0 8px 0;
+    color: var(--text-main);
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.demoCredentialsBox p {
+    margin: 0 0 16px 0;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.credentialRow {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0f172a;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px dashed #334155;
+}
+
+.credentialRow:last-child {
+    margin-bottom: 0;
+}
+
+.credentialRow strong {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.credentialRow span {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    color: var(--primary);
+    background: rgba(16, 185, 129, 0.06);
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(16, 185, 129, 0.15);
+    user-select: all;
+    cursor: pointer;
 }
 
 .loginHeader {
