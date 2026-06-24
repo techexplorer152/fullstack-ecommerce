@@ -3,3 +3,6 @@
 <img width="238" height="371" alt="image" src="https://github.com/user-attachments/assets/f82752b1-da84-4924-81bd-be1887164eaf" />
 
 
+A Fullstack E commerce platform with CRUD functionality 
+
+
