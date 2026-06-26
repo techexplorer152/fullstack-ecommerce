@@ -3,3 +3,43 @@
 <img width="238" height="371" alt="image" src="https://github.com/user-attachments/assets/f82752b1-da84-4924-81bd-be1887164eaf" />
 
 
+Based on your project structure and images, here is a clean, modern, and updated README.md that highlights your tech stack, setup requirements (including both .env files), and basic commands.
+
+Markdown
+# Full-Stack E-Commerce & Admin Dashboard
+
+A robust full-stack e-commerce platform featuring an interactive storefront and a comprehensive administrative dashboard for managing products, users, analytics, and orders.
+
+---
+
+## 🚀 Tech Stack
+
+### Frontend
+* **Core:** React.js, Vite
+* **Styling:** CSS Modules, Custom Component CSS
+* **Routing:** React Router DOM
+* **Deployment:** Vercel Configuration Ready (`vercel.json`)
+
+### Backend
+* **Environment:** Node.js, Express.js
+* **Database:** Relational Database Integration (`db.js`, `initDB.js`)
+* **Authentication:** JWT / Custom Middleware (`authMiddleware.js`, `adminMiddleware.js`)
+* **File Uploads:** Multer / Custom Upload Middleware (`uploadMiddleware.js`)
+
+---
+
+## 🛠️ Getting Started
+
+### Prerequisites
+* Node.js (v18+ recommended)
+* npm
+
+### Environment Variables Setup
+
+This project requires environment variables configured in both the frontend and backend directories. Create a `.env` file in each respective folder:
+
+#### Backend Environment Variables (`/backend/.env`)
+```env
+PORT=5000
+DATABASE_URL=your_database_connection_string
+JWT_SECRET=your_jwt_secret_key
