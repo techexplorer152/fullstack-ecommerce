@@ -38,8 +38,4 @@ A robust full-stack e-commerce platform featuring an interactive storefront and 
 
 This project requires environment variables configured in both the frontend and backend directories. Create a `.env` file in each respective folder:
 
-#### Backend Environment Variables (`/backend/.env`)
-```env
-PORT=5000
-DATABASE_URL=your_database_connection_string
-JWT_SECRET=your_jwt_secret_key
+
