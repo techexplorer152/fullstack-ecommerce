@@ -38,4 +38,20 @@ A robust full-stack e-commerce platform featuring an interactive storefront and 
 
 This project requires environment variables configured in both the frontend and backend directories. Create a `.env` file in each respective folder:
 
+frontend
+API_URL
 
+backend
+
+
+DB_HOST
+DB_NAME
+DB_USER
+DB_PASS
+DB_PORT
+PORT
+JWT_SECRET
+
+CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
