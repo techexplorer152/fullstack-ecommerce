@@ -3,12 +3,12 @@
 <img width="238" height="371" alt="image" src="https://github.com/user-attachments/assets/f82752b1-da84-4924-81bd-be1887164eaf" />
 
 
-Based on your project structure and images, here is a clean, modern, and updated README.md that highlights your tech stack, setup requirements (including both .env files), and basic commands.
+
 
 Markdown
 # Full-Stack E-Commerce & Admin Dashboard
 
-A robust full-stack e-commerce platform featuring an interactive storefront and a comprehensive administrative dashboard for managing products, users, analytics, and orders.
+A full-stack e-commerce platform featuring an interactive storefront and a comprehensive administrative dashboard for managing products, users, analytics, and orders.
 
 ---
 
@@ -33,6 +33,29 @@ A robust full-stack e-commerce platform featuring an interactive storefront and 
 ### Prerequisites
 * Node.js (v18+ recommended)
 * npm
+
+
+##  Running the Application
+
+To run this project locally, you will need to open two separate terminal windows: one for the backend server and one for the frontend UI.
+
+### 1. Start the Backend
+Navigate to the `backend` directory, install the required packages, and start the server:
+```bash
+cd backend
+npm install
+npm run dev
+```
+### 2.Start the Frontend
+
+In a second terminal window, navigate to the frontend directory, install the dependencies, and launch the Vite development server:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
 
 ### Environment Variables Setup
 
